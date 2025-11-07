@@ -1,17 +1,17 @@
 @echo off
 chcp 65001 >nul
-echo Удаление Encryption App...
+echo Removing Encryption App...
 
 set "APP_DIR=EncryptionApp"
 
 if exist "%APP_DIR%" (
-    echo Удаление папки программы...
+    echo Deleting program files...
     rmdir /s /q "%APP_DIR%"
-    echo Папка "%APP_DIR%" удалена
+    echo Encryption App successfully removed!
 ) else (
-    echo Папка "%APP_DIR%" не найдена
+    echo Encryption App is not installed!
 )
 
 echo.
-echo Удаление завершено!
+echo Removal complete!
 pause
