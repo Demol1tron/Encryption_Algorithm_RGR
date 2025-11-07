@@ -39,8 +39,8 @@ g++ -shared -fPIC -o "$LIBS_DIR/hill.so" ciphers/hill.cpp
 echo "3) Шифр фиксированной перестановки..."
 g++ -shared -fPIC -o "$LIBS_DIR/permutation.so" ciphers/permutation.cpp
 
-echo "Компиляция главной программы..."
-g++ -o "$INSTALL_DIR/encryption_app" src/main.cpp utils/file_utils.cpp
+echo "Компиляция программы..."
+g++ -o "$INSTALL_DIR/EncryptionApp" src/main.cpp utils/file_utils.cpp
 
 cat > "$INSTALL_DIR/README.txt" <<'EOF'
 
@@ -71,7 +71,7 @@ Version=1.0
 Type=Application
 Name=Encryption App
 Comment=Программа для шифрования и дешифрования
-Exec=$INSTALL_DIR/encryption_app
+Exec=$INSTALL_DIR/EncryptionApp
 Icon=utilities-terminal
 Categories=Utility;Development;
 Terminal=true
@@ -80,7 +80,7 @@ Path=$INSTALL_DIR
 EOF
 
 chmod +x "$DESKTOP_FILE"
-chmod +x "$INSTALL_DIR/encryption_app"
+chmod +x "$INSTALL_DIR/EncryptionApp"
 
 echo ""
 echo "Установка завершена!"

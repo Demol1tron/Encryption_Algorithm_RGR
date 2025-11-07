@@ -6,7 +6,7 @@
 
 const char* GetCipherName()
 {
-    return "Фиксированная Перестановка"; // k = 4
+    return "Шифр фиксированной перестановки"; // k = 4
 }
 
 bool ValidateKey(const uint8_t *key)

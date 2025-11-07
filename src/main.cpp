@@ -15,14 +15,14 @@ int main()
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-    LoadCipher("../dlls/atbash.dll");
-    LoadCipher("../dlls/hill.dll");
-    LoadCipher("../dlls/permutation.dll");
+    LoadCipher("./dlls/atbash.dll");
+    LoadCipher("./dlls/hill.dll");
+    LoadCipher("./dlls/permutation.dll");
 
 #else
-    LoadCipher("../libs/atbash.so");
-    LoadCipher("../libs/hill.so");
-    LoadCipher("../libs/permutation.so");
+    LoadCipher("./libs/atbash.so");
+    LoadCipher("./libs/hill.so");
+    LoadCipher("./libs/permutation.so");
 #endif
 
     bool running = true;
@@ -283,10 +283,14 @@ void ProcessFileEncryption()
 
 void ShowKeyGenerator()
 {
+    if (loadedCiphers.empty()) {
+        std::cout << "Нет загруженных шифров!" << std::endl;
+        return;
+    }
+
     std::cout << "\n***Генератор ключей***" << std::endl;
-    std::cout << "1. Атбаш" << std::endl;
-    std::cout << "2. Хилл" << std::endl;
-    std::cout << "3. Перестановка" << std::endl;
+    for (size_t i = 0; i < loadedCiphers.size(); ++i)
+        std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
     std::cout << "Выберите шифр для генерации ключа: ";
     
     int choice;

@@ -5,7 +5,7 @@
 
 const char* GetCipherName()
 {
-    return "Хилл"; // 2*2
+    return "Шифр Хилла"; // 2*2
 }
 
 bool ValidateKey(const uint8_t *key)
