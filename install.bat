@@ -19,7 +19,7 @@ g++ -shared -o "%APP_DIR%\dlls\hill.dll" ciphers\hill.cpp
 g++ -shared -o "%APP_DIR%\dlls\permutation.dll" ciphers\permutation.cpp
 
 echo Compiling main program...
-g++ -o "%APP_DIR%\EncryptionApp.exe" src\main.cpp utils\file_utils.cpp "%APP_DIR%\dlls\atbash.dll" "%APP_DIR%\dlls\hill.dll" "%APP_DIR%\dlls\permutation.dll"
+g++ -o "%APP_DIR%\EncryptionApp.exe" src\main.cpp src\cipher_manager.cpp src\encrypt_decrypt_keygen.cpp utils\file_utils.cpp "%APP_DIR%\dlls\atbash.dll" "%APP_DIR%\dlls\hill.dll" "%APP_DIR%\dlls\permutation.dll"
 
 if errorlevel 1 (
     echo COMPILATION FAILED!
