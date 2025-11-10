@@ -5,7 +5,7 @@
 
 const char* GetCipherName()
 {
-    return "Шифр фиксированной перестановки (размер блока переменный)";
+    return "Шифр фиксированной перестановки (блочный)";
 }
 
 bool ValidateKey(const std::string &key)
@@ -60,17 +60,20 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
     for (int i = 0; i < blockSize; ++i)
         newPositions[i] = permutation[i] - 1;
     
-    for (size_t blockStart = 0; blockStart < dataSize; blockStart += blockSize) {
-        int currentBlockSize = std::min(static_cast<int>(dataSize - blockStart), blockSize);
+    size_t totalBlocks = (dataSize + blockSize - 1) / blockSize; // округление вверх
+    
+    for (size_t blockIndex = 0; blockIndex < totalBlocks; ++blockIndex) {
+        size_t blockStart = blockIndex * blockSize;
         
-        // блок с пробелами
+        // блок пробелов
         std::vector<uint8_t> block(blockSize, ' ');
         
-        // копируем данные
+        // заполняем данными
+        int currentBlockSize = std::min(static_cast<int>(dataSize - blockStart), blockSize);
         for (int i = 0; i < currentBlockSize; ++i)
             block[i] = inputData[blockStart + i];
         
-        // перестановка
+        // применяем перестановку
         for (int i = 0; i < blockSize; ++i)
             outputData[blockStart + i] = block[newPositions[i]];
     }
@@ -104,11 +107,13 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
     for (int i = 0; i < blockSize; ++i)
         inversePositions[originalPositions[i]] = i;
     
-    for (size_t blockStart = 0; blockStart < dataSize; blockStart += blockSize) {
-        // блок с пробелами
-        std::vector<uint8_t> block(blockSize, ' ');
+    size_t totalBlocks = (dataSize + blockSize - 1) / blockSize;
+    
+    for (size_t blockIndex = 0; blockIndex < totalBlocks; ++blockIndex) {
+        size_t blockStart = blockIndex * blockSize;
         
-        // копируем шифрованные данные
+        // блок для зашифрованных данных
+        std::vector<uint8_t> block(blockSize);
         for (int i = 0; i < blockSize; ++i)
             block[i] = inputData[blockStart + i];
         
