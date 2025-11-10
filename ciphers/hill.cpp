@@ -1,23 +1,19 @@
 #include "api.h"
 #include <vector>
-#include <string>
 #include <sstream>
 
 const char* GetCipherName()
 {
-    return "Шифр Хилла"; // 2*2
+    return "Шифр Хилла (2*2)";
 }
 
-bool ValidateKey(const uint8_t *key)
+bool ValidateKey(const std::string &key)
 {
     // ключ = 4 числа через запятую "1, 2, 3, 5" -> [[1,2],[3,5]]
-    
-    std::string keyStr(reinterpret_cast<const char*>(key));
-    std::stringstream ss(keyStr);
+    std::stringstream ss(key);
     std::vector<int> numbers;
     std::string token;
     
-    // парсим 4 числа из строки
     while (std::getline(ss, token, ',')) {
         try {
             numbers.push_back(std::stoi(token));
@@ -32,8 +28,6 @@ bool ValidateKey(const uint8_t *key)
     // проверяем что определитель нечетный (условие обратимости по mod 256)
     // det = a * d - b * c
     int det = (numbers[0] * numbers[3] - numbers[1] * numbers[2]) % 256;
-    
-    // должен быть нечетным
     if (det % 2 == 0)
         return false;
     
@@ -41,11 +35,9 @@ bool ValidateKey(const uint8_t *key)
 }
 
 void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize, 
-                const uint8_t *key)
+                const std::string &key)
 {
-    // парсим ключ-матрицу
-    std::string keyStr(reinterpret_cast<const char*>(key));
-    std::stringstream ss(keyStr);
+    std::stringstream ss(key);
     int a, b, c, d;
     char comma;
     ss >> a >> comma >> b >> comma >> c >> comma >> d;
@@ -55,7 +47,7 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         int x1 = inputData[i];
         int x2 = inputData[i + 1];
         
-        // матричное умножение: [y1, y2] = [x1, x2] * [[a, b],[c, d]]
+        // [y1, y2] = [x1, x2] * [[a, b],[c, d]]
         int y1 = (a * x1 + b * x2) % 256;
         int y2 = (c * x1 + d * x2) % 256;
         
@@ -69,21 +61,19 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
 }
 
 void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize, 
-                const uint8_t *key)
+                const std::string &key)
 {
-    // парсим ключ-матрицу
-    std::string keyStr(reinterpret_cast<const char*>(key));
-    std::stringstream ss(keyStr);
+    std::stringstream ss(key);
     int a, b, c, d;
     char comma;
     ss >> a >> comma >> b >> comma >> c >> comma >> d;
     
-    // вычисляем обратную матрицу по mod 256
+    // вычисляем обратную матрицу
     int det = (a * d - b * c) % 256;
     if (det < 0)
         det += 256;
     
-    // находим обратный определитель по простому модулю
+    // находим обратный определитель
     int detInv = -1;
     for (int i = 1; i < 256; ++i)
         if ((det * i) % 256 == 1) {
@@ -92,13 +82,13 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         }
     
     if (detInv == -1) {
-        // не удалось найти обратный - оставляем данные как есть \_(*_*)_/
+        // не удалось найти обратный det
         for (size_t i = 0; i < dataSize; ++i)
             outputData[i] = inputData[i];
         return;
     }
     
-    // обратная матрица: [[d, -b], [-c, a]] * detInv
+    // [[d, -b], [-c, a]] * detInv
     int aInv = (d * detInv) % 256;
     int bInv = (-b * detInv) % 256;
     int cInv = (-c * detInv) % 256;

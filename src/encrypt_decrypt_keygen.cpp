@@ -46,7 +46,7 @@ void ProcessTextEncryption()
     std::getline(std::cin, keyStr);
     
     // прямая работа с ключом без конвертации
-    if (!cipher.ValidateKey(reinterpret_cast<const uint8_t*>(keyStr.c_str()))) {
+    if (!cipher.ValidateKey(keyStr)) {
         std::cout << "Неверный ключ для выбранного шифра!" << std::endl;
         return;
     }
@@ -55,22 +55,21 @@ void ProcessTextEncryption()
     std::string text;
     std::getline(std::cin, text);
     
-    // память для результата
-    std::vector<uint8_t> output(text.size());
+    // результат (3 шифр может увеличить выход)
+    std::vector<uint8_t> output(text.size() + 100);
     
     // напрямую с данными строки
     if (operation == 1) {
         cipher.EncryptData(reinterpret_cast<const uint8_t*>(text.data()), output.data(),
-                            text.size(), reinterpret_cast<const uint8_t*>(keyStr.c_str()));
+                            text.size(), keyStr);
         std::cout << "Зашифрованный текст: ";
     } else {
         cipher.DecryptData(reinterpret_cast<const uint8_t*>(text.data()), output.data(),
-                            text.size(), reinterpret_cast<const uint8_t*>(keyStr.c_str()));
+                            text.size(), keyStr);
         std::cout << "Расшифрованный текст: ";
     }
     
     // вывод в байтах
-    std::cout << "Результат: ";
     for (uint8_t &byte : output)
         std::cout << static_cast<char>(byte);
 
@@ -119,7 +118,7 @@ void ProcessFileEncryption()
     std::string keyStr;
     std::getline(std::cin, keyStr);
     
-    if (!cipher.ValidateKey(reinterpret_cast<const uint8_t*>(keyStr.c_str()))) {
+    if (!cipher.ValidateKey(keyStr)) {
         std::cout << "Неверный ключ для выбранного шифра!" << std::endl;
         return;
     }
@@ -140,11 +139,11 @@ void ProcessFileEncryption()
         
         if (operation == 1) {
             cipher.EncryptData(inputData.data(), outputData.data(), inputData.size(),
-                                reinterpret_cast<const uint8_t*>(keyStr.c_str()));
+                                keyStr);
             std::cout << "Файл зашифрован." << std::endl;
         } else {
             cipher.DecryptData(inputData.data(), outputData.data(), inputData.size(),
-                                reinterpret_cast<const uint8_t*>(keyStr.c_str()));
+                                keyStr);
             std::cout << "Файл расшифрован." << std::endl;
         }
         

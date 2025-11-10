@@ -19,9 +19,9 @@ bool LoadCipher(const std::string &libraryPath)
     }
     
     auto getName = (const char*(*)())GetProcAddress(library, "GetCipherName");
-    auto validateKey = (bool(*)(const uint8_t*))GetProcAddress(library, "ValidateKey");
-    auto encrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const uint8_t*))GetProcAddress(library, "EncryptData");
-    auto decrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const uint8_t*))GetProcAddress(library, "DecryptData");
+    auto validateKey = (bool(*)(const std::string&))GetProcAddress(library, "ValidateKey");
+    auto encrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const std::string&))GetProcAddress(library, "EncryptData");
+    auto decrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const std::string&))GetProcAddress(library, "DecryptData");
 #else
     void *library = dlopen(libraryPath.c_str(), RTLD_LAZY);
     if (!library) {
@@ -30,9 +30,9 @@ bool LoadCipher(const std::string &libraryPath)
     }
     
     auto getName = (const char*(*)())dlsym(library, "GetCipherName");
-    auto validateKey = (bool(*)(const uint8_t*))dlsym(library, "ValidateKey");
-    auto encrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const uint8_t*))dlsym(library, "EncryptData");
-    auto decrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const uint8_t*))dlsym(library, "DecryptData");
+    auto validateKey = (bool(*)(const std::string&))dlsym(library, "ValidateKey");
+    auto encrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const std::string&))dlsym(library, "EncryptData");
+    auto decrypt = (void(*)(const uint8_t*, uint8_t*, size_t, const std::string&))dlsym(library, "DecryptData");
 #endif
 
     if (!getName || !validateKey || !encrypt || !decrypt) {

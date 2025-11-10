@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,11 +11,11 @@ extern "C" {
 
 // функции каждой библиотеки шифра
 const char* GetCipherName();
-bool ValidateKey(const uint8_t *key);
+bool ValidateKey(const std::string &key);
 void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize, 
-                const uint8_t *key);
+                const std::string &key);
 void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize, 
-                const uint8_t *key);
+                const std::string &key);
 
 #ifdef __cplusplus
 }
