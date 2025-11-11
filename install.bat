@@ -9,17 +9,17 @@ if errorlevel 1 (
     exit /b 1
 )
 
-set "APP_DIR=EncryptionApp"
+set "APP_DIR=Encryption_Algorithm_RGR"
 mkdir "%APP_DIR%" 2>nul
 mkdir "%APP_DIR%\dlls" 2>nul
 
 echo Compiling libraries...
 g++ -shared -o "%APP_DIR%\dlls\atbash.dll" ciphers\atbash.cpp
 g++ -shared -o "%APP_DIR%\dlls\hill.dll" ciphers\hill.cpp
-g++ -shared -o "%APP_DIR%\dlls\permutation.dll" ciphers\permutation.cpp
+g++ -shared -o "%APP_DIR%\dlls\permutations.dll" ciphers\permutations.cpp
 
 echo Compiling main program...
-g++ -o "%APP_DIR%\EncryptionApp.exe" src\main.cpp src\cipher_manager.cpp src\encrypt_decrypt_keygen.cpp utils\file_utils.cpp "%APP_DIR%\dlls\atbash.dll" "%APP_DIR%\dlls\hill.dll" "%APP_DIR%\dlls\permutation.dll"
+g++ -o "%APP_DIR%\Encryption_Algorithm_RGR.exe" src\main.cpp src\cipher_manager.cpp src\encrypt_decrypt_keygen.cpp utils\file_utils.cpp "%APP_DIR%\dlls\atbash.dll" "%APP_DIR%\dlls\hill.dll" "%APP_DIR%\dlls\permutations.dll"
 
 if errorlevel 1 (
     echo COMPILATION FAILED!

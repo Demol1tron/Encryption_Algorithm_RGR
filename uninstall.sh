@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "Удаление Encryption App..."
+echo "Удаление Encryption_Algorithm_RGR..."
 
 DESKTOP_DIR=$(xdg-user-dir DESKTOP)
-APP_NAME="EncryptionApp"
+APP_NAME="Encryption_Algorithm_RGR"
 INSTALL_DIR="$DESKTOP_DIR/$APP_NAME"
 DESKTOP_FILE="$DESKTOP_DIR/$APP_NAME.desktop"
 

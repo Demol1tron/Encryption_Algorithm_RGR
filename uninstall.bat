@@ -1,15 +1,15 @@
 @echo off
 chcp 65001 >nul
-echo Removing Encryption App...
+echo Removing Encryption_Algorithm_RGR...
 
-set "APP_DIR=EncryptionApp"
+set "APP_DIR=Encryption_Algorithm_RGR"
 
 if exist "%APP_DIR%" (
     echo Deleting program files...
     rmdir /s /q "%APP_DIR%"
-    echo Encryption App successfully removed!
+    echo Encryption_Algorithm_RGR successfully removed!
 ) else (
-    echo Encryption App is not installed!
+    echo Encryption_Algorithm_RGR is not installed!
 )
 
 echo.

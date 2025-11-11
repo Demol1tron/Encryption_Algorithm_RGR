@@ -2,15 +2,15 @@
 
 set -e
 
-echo "Установка Encryption App..."
+echo "Установка Encryption_Algorithm_RGR..."
 
 DESKTOP_DIR=$(xdg-user-dir DESKTOP)
-APP_NAME="EncryptionApp"
+APP_NAME="Encryption_Algorithm_RGR"
 INSTALL_DIR="$DESKTOP_DIR/$APP_NAME"
 DESKTOP_FILE="$DESKTOP_DIR/$APP_NAME.desktop"
 LIBS_DIR="$INSTALL_DIR/libs"
 
-REQUIRED_FILES=("src/main.cpp" "src/cipher_manager.cpp" "src/encrypt_decrypt_keygen.cpp" "ciphers/atbash.cpp" "ciphers/hill.cpp" "ciphers/permutation.cpp" "utils/file_utils.cpp")
+REQUIRED_FILES=("src/main.cpp" "src/cipher_manager.cpp" "src/encrypt_decrypt_keygen.cpp" "ciphers/atbash.cpp" "ciphers/hill.cpp" "ciphers/permutations.cpp" "utils/file_utils.cpp")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$file" ]; then
         echo "Ошибка: файл '$file' не найден."
@@ -37,14 +37,14 @@ echo "2) Шифр Хилла..."
 g++ -shared -fPIC -o "$LIBS_DIR/hill.so" ciphers/hill.cpp
 
 echo "3) Шифр фиксированной перестановки..."
-g++ -shared -fPIC -o "$LIBS_DIR/permutation.so" ciphers/permutation.cpp
+g++ -shared -fPIC -o "$LIBS_DIR/permutations.so" ciphers/permutations.cpp
 
 echo "Компиляция программы..."
-g++ -o "$INSTALL_DIR/EncryptionApp" src/main.cpp src/cipher_manager.cpp src/encrypt_decrypt_keygen.cpp utils/file_utils.cpp
+g++ -o "$INSTALL_DIR/Encryption_Algorithm_RGR" src/main.cpp src/cipher_manager.cpp src/encrypt_decrypt_keygen.cpp utils/file_utils.cpp
 
 cat > "$INSTALL_DIR/README.txt" <<'EOF'
 
-Encryption App - программа для шифрования и дешифрования текстов 
+Encryption_Algorithm_RGR - программа для шифрования и дешифрования текстов 
 и файлов с использованием трех алгоритмов:
 
 1. Атбаш
@@ -69,9 +69,9 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Encryption App
+Name=Encryption_Algorithm_RGR
 Comment=Программа для шифрования и дешифрования
-Exec=$INSTALL_DIR/EncryptionApp
+Exec=$INSTALL_DIR/Encryption_Algorithm_RGR
 Icon=utilities-terminal
 Categories=Utility;Development;
 Terminal=true
@@ -80,7 +80,7 @@ Path=$INSTALL_DIR
 EOF
 
 chmod +x "$DESKTOP_FILE"
-chmod +x "$INSTALL_DIR/EncryptionApp"
+chmod +x "$INSTALL_DIR/Encryption_Algorithm_RGR"
 
 echo ""
 echo "Установка завершена!"
