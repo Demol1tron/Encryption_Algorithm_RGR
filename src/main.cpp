@@ -52,7 +52,7 @@ int main()
                 running = false;
                 break;
             default:
-                std::cout << "Неверный выбор операции!" << std::endl;
+                std::cout << "Неверный выбор! Попробуйте снова." << std::endl;
         }
     }
 

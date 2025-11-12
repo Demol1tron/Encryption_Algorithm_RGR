@@ -17,7 +17,7 @@ std::vector<uint8_t> ReadFile(const std::string &filePath)
 {
     std::ifstream file(filePath, std::ios::binary);
     if (!file)
-        throw std::runtime_error("Нельзя открыть файл: " + filePath);
+        throw std::runtime_error("Нельзя открыть файл >> " + filePath);
     
     file.seekg(0, std::ios::end);
     size_t fileSize = file.tellg();
@@ -61,10 +61,10 @@ bool CreateDirectoryIfNeeded(const std::string &filePath)
         return true;
     
     #ifdef _WIN32
-        // Windows - создаем все папки рекурсивно
+        // создаем все папки рекурсивно
         return _mkdir(directory.c_str()) == 0 || errno == EEXIST;
     #else
-        // Linux - используем system для создания всей цепочки
+        // используем system для создания всей цепочки
         std::string command = "mkdir -p \"" + directory + "\"";
         return system(command.c_str()) == 0;
     #endif

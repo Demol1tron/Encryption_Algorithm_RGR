@@ -53,7 +53,7 @@ bool LoadCipher(const std::string &libraryPath)
     plugin.DecryptData = decrypt;
 
     loadedCiphers.push_back(plugin);
-    std::cout << "Загружен шифр: " << getName() << std::endl;
+    std::cout << "Загружен модуль >> " << getName() << std::endl;
     return true;
 }
 
