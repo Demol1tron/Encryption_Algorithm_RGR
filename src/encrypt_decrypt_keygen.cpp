@@ -14,14 +14,19 @@ void ProcessTextEncryption()
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
 
+    std::cout << "0. Назад" << std::endl;
+
     std::cout << ">> ";
     
     int cipherChoice;
     std::cin >> cipherChoice;
     std::cin.ignore();
     
-    if (cipherChoice < 1 || cipherChoice > loadedCiphers.size()) {
-        std::cout << "Неверный выбор алгоритма!" << std::endl;
+    if (cipherChoice < 0 || cipherChoice > loadedCiphers.size()) {
+        std::cout << "Неверный выбор! Возврат в главное меню." << std::endl;
+        return;
+    } else if (cipherChoice == 0) {
+        std::cout << "Возврат в главное меню." << std::endl;
         return;
     }
     
@@ -30,32 +35,35 @@ void ProcessTextEncryption()
     std::cout << "\n<< ВЫБОР ПРЕОБРАЗОВАНИЯ >>" << std::endl;
     std::cout << "1. Шифровать" << std::endl;
     std::cout << "2. Дешифровать" << std::endl;
+    std::cout << "0. Назад" << std::endl;
     std::cout << ">> ";
     
     int operation;
     std::cin >> operation;
     std::cin.ignore();
     
-    if (operation != 1 && operation != 2) {
-        std::cout << "Неверный выбор преобразования!" << std::endl;
-        return;
+    if (operation == 0) {
+        std::cout << "Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
+    } else if (operation != 1 && operation != 2) {
+        std::cout << "Неверный выбор! Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
     }
 
     std::cout << "Ключ >> ";
     std::string keyStr;
     std::getline(std::cin, keyStr);
     
-    // прямая работа с ключом без конвертации
     if (!cipher.ValidateKey(keyStr)) {
-        std::cout << "Неверный ключ для выбранного алгоритма!" << std::endl;
-        return;
+        std::cout << "Неверный ключ для выбранного алгоритма! Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
     }
 
     std::cout << "Ввод текста >> ";
     std::string text;
     std::getline(std::cin, text);
     
-    // результат (3 шифр может увеличить выход)
+    // результат (3 шифр может увеличить выходной текст)
     std::vector<uint8_t> output(text.size() + 100);
     
     // напрямую с данными строки
@@ -87,14 +95,20 @@ void ProcessFileEncryption()
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
 
+    std::cout << "0. Назад" << std::endl;
+
+
     std::cout << ">> ";
     
     int cipherChoice;
     std::cin >> cipherChoice;
     std::cin.ignore();
     
-    if (cipherChoice < 1 || cipherChoice > loadedCiphers.size()) {
-        std::cout << "Неверный выбор алгоритма!" << std::endl;
+    if (cipherChoice < 0 || cipherChoice > loadedCiphers.size()) {
+        std::cout << "Неверный выбор!" << std::endl;
+        return;
+    } else if (cipherChoice == 0) {
+        std::cout << "Возврат в главное меню." << std::endl;
         return;
     }
     
@@ -103,15 +117,19 @@ void ProcessFileEncryption()
     std::cout << "\n<< ВЫБОР ПРЕОБРАЗОВАНИЯ >>" << std::endl;
     std::cout << "1. Шифровать" << std::endl;
     std::cout << "2. Дешифровать" << std::endl;
+    std::cout << "0. Назад" << std::endl;
     std::cout << ">> ";
     
     int operation;
     std::cin >> operation;
     std::cin.ignore();
     
-    if (operation != 1 && operation != 2) {
-        std::cout << "Неверный выбор преобразования!" << std::endl;
-        return;
+    if (operation == 0) {
+        std::cout << "Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
+    } else if (operation != 1 && operation != 2) {
+        std::cout << "Неверный выбор! Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
     }
 
     std::cout << "Ключ >> ";
@@ -119,8 +137,8 @@ void ProcessFileEncryption()
     std::getline(std::cin, keyStr);
     
     if (!cipher.ValidateKey(keyStr)) {
-        std::cout << "Неверный ключ для выбранного алгоритма!" << std::endl;
-        return;
+        std::cout << "Неверный ключ для выбранного алгоритма! Возврат в меню выбора алгоритма." << std::endl;
+        return ProcessTextEncryption();
     }
 
     // ввод путей к файлам
@@ -226,6 +244,7 @@ void ShowKeyGenerator()
     std::cout << "\n<< ГЕНЕРАТОР КЛЮЧЕЙ >>" << std::endl;
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
+    std::cout << "0. Назад" << std::endl;
     std::cout << "Генерация ключа для алгоритма >> ";
     
     int choice;
@@ -286,6 +305,9 @@ void ShowKeyGenerator()
                       << numbers[1] << "," << numbers[2] << "," << numbers[3] << "]" << std::endl;
             break;
         }
+        case 0:
+            std::cout << "Возврат в главное меню." << std::endl;
+            return;
         default:
             std::cout << "Неверный выбор!" << std::endl;
     }
