@@ -230,7 +230,7 @@ void ProcessFileEncryption()
         } else {
             cipher.DecryptData(inputData.data(), outputData.data(), inputData.size(),
                                 key);
-            std::cout << "Файл расшифрован." << std::endl;
+            std::cout << "Файл дешифрован." << std::endl;
         }
         
         // запись

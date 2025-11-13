@@ -36,7 +36,6 @@ int main()
         int choice;
         std::cin >> choice;
         std::cin.ignore();
-
         switch (choice)
         {
             case 1:
@@ -55,7 +54,6 @@ int main()
                 std::cout << "Неверный выбор! Попробуйте снова." << std::endl;
         }
     }
-
     UnloadAllCiphers();
     std::cout << "Выход из программы." << std::endl;
 }
